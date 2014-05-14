@@ -16,20 +16,38 @@ package bee;
 
 import  bee.DAL;
 import bee.Ncom;
-
+import bee.Scheduler;;
 
 public class AgentMain {
 
 	public static void main( String args[] ) throws Exception
 	 {
-	    DAL query1 = new  DAL();
-	    String XmlString ;
+           
 	    //query1.GetQuery("select 1 from dual");
 		//System.out.print(query1.RunQuery("oracle.jdbc.driver.OracleDriver","select FILE_NAME as FILEN,BYTES as SIZEB from dba_data_files","jdbc:oracle:thin:@localhost:1521:xe","system","test123")+"\n");
-
+ 
+		final Scheduler Sched = new Scheduler();
+   //     final DAL Dal1 = new DAL(); 
+		final Runnable Test = new Runnable() 
+		{
+	       //public void run() { System.out.println("schedule"); }
+			public void run() {
+				final String XmlString;
+				System.out.println("schedule");
+				XmlString = DAL.RunQuery("com.mysql.jdbc.Driver","select user,host from user where password_expired = 'N'","jdbc:mysql://192.168.56.200:3306/mysql","root","test123");
+			try {
+				Ncom.putXML(XmlString,"http://192.168.56.200/ptest.php");
+			} catch (Exception e) {
+				//catch block
+				e.printStackTrace();
+			}// end try
+			}
+		
+	    };
+	    
+	    Sched.ScheduleTask(Test, 1, 2);
 		//System.out.print(query1.RunQuery("oracle.jdbc.driver.OracleDriver","select open_mode from v$database","jdbc:oracle:thin:@localhost:1521:xe","system","test123")+"\n");		
-	XmlString = query1.RunQuery("com.mysql.jdbc.Driver","select user,host from user where password_expired = 'N'","jdbc:mysql://192.168.56.200:3306/mysql","root","test123");
-	Ncom.putXML(XmlString,"http://192.168.56.200/ptest.php");
+	 
 	//System.out.print(query1.RunQuery("com.mysql.jdbc.Driver","select user,host from user where password_expired = 'N'","jdbc:mysql://192.168.56.200:3306/mysql","root","test123"));
 		//networkConn
 	 }

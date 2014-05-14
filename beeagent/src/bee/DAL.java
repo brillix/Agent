@@ -34,7 +34,7 @@ public class DAL {
 		//runQuery();
 	 }// end main
 	
-	public String RunQuery(String DBDriver,String SqlString,String DBUrl,String User,String Pass)
+	public static  String RunQuery(String DBDriver,String SqlString,String DBUrl,String User,String Pass)
 	{
 		Connection conn = null;
 		java.sql.Statement stmt = null;
